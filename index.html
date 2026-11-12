@@ -34,3 +34,45 @@
       </header>
       <!------- Chat Area ------->
       <main>
+          <section class="chatbox">
+          <!-- Quick Starter Prompts -->
+          <div class="quick-prompts">
+            <button type="button" class="prompt-chip" onclick="sendPrompt('Suggest a hydrating morning skincare routine for dry skin')">💧 Morning Routine</button>
+            <button type="button" class="prompt-chip" onclick="sendPrompt('What serum is best for dark spots and dullness?')">✨ Bright Reveal Serum</button>
+            <button type="button" class="prompt-chip" onclick="sendPrompt('Recommend a repairing hair mask for heat damage')">💇‍♀️ Hair Damage Mask</button>
+            <button type="button" class="prompt-chip test-offtopic" onclick="sendPrompt('Can you write me a Python script to sort a list?')">🚫 Test Off-Topic Guardrail</button>
+          </div>
+          <div id="chatWindow" class="chat-window">
+            <!-- messages will be appended here via JS -->
+          </div>
+          <form id="chatForm" class="chat-form">
+            <label for="userInput" class="visually-hidden">Message</label>
+            <input
+              id="userInput"
+              name="userInput"
+              type="text"
+              placeholder="Ask me about L'Oréal products, ingredients, or routines…"
+              autocomplete="off"
+              required
+            />
+            <button type="submit" id="sendBtn" aria-label="Send">
+              <span class="material-icons">send</span>
+              ss="visually-hidden">Send</span>
+            </button>
+          </form>
+        </section>
+      </main>
+      <!------- Footer Links ------->
+      <footer class="site-footer">
+        <p>&copy; 2025 L'Oréal. All rights reserved.</p>
+        <nav>
+          <!-- These URLs are placeholders -->
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Contact</a>
+        </nav>
+      </footer>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
