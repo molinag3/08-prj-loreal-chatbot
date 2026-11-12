@@ -3,7 +3,8 @@ const chatForm = document.getElementById("chatForm");
 const userInput = document.getElementById("userInput");
 const chatWindow = document.getElementById("chatWindow");
 
-// Set your deployed Cloudflare Worker URL here if applicable (e.g. "https://your-worker.workers.dev")
+// Configure your Cloudflare Worker URL here if deployed:
+// e.g. "https://loreal-product-advisor-worker.yourname.workers.dev"
 const WORKER_URL = "";
 
 // Multi-turn conversation memory
@@ -13,6 +14,11 @@ const conversationHistory = [];
    KNOWLEDGE BASE: Real L'Oréal brands, formulas, and routines
    ------------------------------------------------------------- */
 const LOREAL_KB = [
+  // Dandruff / Flaky Scalp + Dry Hair
+  {
+    triggers: ["dandruff", "flak", "itch", "scalp", "dandruffy"],
+    answer: "For dry hair with dandruff or an itchy scalp, the key is eliminating flakes while replenishing deep moisture without harsh sulfates:\n\n1. **Targeted Scalp Cleanse**: EverPure Sulfate-Free Scalp Care + Detox Shampoo (with Neem Leaf & Menthol). It purifies the scalp and removes visible flakes without stripping moisture.\n2. **Hydrate Ends**: EverPure Scalp Care + Detox Conditioner (apply only from mid-lengths to ends to keep the scalp balanced).\n3. **Instant Hydration Booster**: Elvive Hyaluron Plump Flash Hydration Wonder Water (gives an instant 72-hour moisture surge to parched strands in 8 seconds).\n4. **Weekly Treatment**: Elvive Total Repair 5 Damage-Erasing Balm on your ends for rich, replenishing nourishment."
+  },
   // Acne / Blemishes / Breakouts
   {
     triggers: ["acne", "breakout", "pimple", "blemish", "salicylic", "clogged", "pores", "blackhead"],
@@ -38,11 +44,6 @@ const LOREAL_KB = [
     triggers: ["dark spot", "spot", "dull", "brighten", "glow", "uneven", "sun spot", "hyperpigmentation", "vitamin c"],
     answer: "For dark spots and dullness:\n\n1. **Morning Serum**: Revitalift 12% Pure Vitamin C + E + Salicylic Acid Serum to brighten and protect against free radicals.\n2. **Targeted Spot Corrector**: Bright Reveal 12% Niacinamide + Ferulic Acid Dark Spot Serum to visibly fade sun spots and uneven tone in 1-2 weeks.\n3. **Essential SPF**: Bright Reveal Broad Spectrum UV Fluid SPF 50 (sunscreen is critical to stop spots from returning)."
   },
-  // Sensitive skin / Redness
-  {
-    triggers: ["sensitive", "redness", "irritat", "gentle", "rosacea", "calm"],
-    answer: "For sensitive or redness-prone skin:\n\n1. **Cleanse**: Use lukewarm water and Age Perfect Cream Cleanser (fragrance-free and hypoallergenic).\n2. **Soothe**: Revitalift 1.5% Pure Hyaluronic Acid Serum (free of synthetic fragrances, parabens, and mineral oils).\n3. **Overnight Recovery**: Age Perfect Midnight Cream with patented Antioxidant Recovery Complex to soothe sensitive skin barriers overnight."
-  },
   // Hair damage / Heat damage / Breakage
   {
     triggers: ["damage", "broken", "heat", "split ends", "bleach", "overprocessed", "reconstruct", "repair"],
@@ -53,35 +54,10 @@ const LOREAL_KB = [
     triggers: ["frizz", "curly", "curl", "wave", "flyaway", "dry hair", "hydration hair"],
     answer: "For frizzy, dry, or curly hair:\n\n1. **Shampoo/Condition**: EverPure Moisture Sulfate-Free Shampoo & Conditioner with Rosemary to gently replenish without stripping natural oils.\n2. **Treatment**: Elvive Hyaluron Plump Flash Hydration Wonder Water (gives instant 72-hour moisture and glossy slip in 8 seconds).\n3. **Leave-In**: Elvive Dream Lengths Frizz Killer Serum or EverCurl Sculpt & Hold Cream-Gel for defined, bouncy curls without crunch."
   },
-  // Color-treated / Blonde / Gray hair
-  {
-    triggers: ["color", "dyed", "blonde", "brass", "yellow", "gray", "grey", "silver", "highlights"],
-    answer: "For color-treated or bleached hair:\n\n1. **Brass Neutralizer**: EverPure Sulfate-Free Purple Shampoo & Conditioner with Hibiscus to neutralize unwanted orange and brassy yellow tones.\n2. **Bond Repair**: EverPure Bond Strengthening Concentrate to repair weak internal bonds broken during coloring.\n3. **Root Touch-Up**: Magic Root Cover Up spray to conceal gray regrowth in 3 seconds between salon visits."
-  },
-  // Hair loss / Thinning
-  {
-    triggers: ["hair loss", "thinning", "fall", "shedding", "density"],
-    answer: "For thinning or weakened hair prone to breakage:\n\n1. **Strengthen**: Elvive Full Resist / Fall Resist 3X Shampoo & Conditioner enriched with Biotin, Vitamin B5, and Arginine to fortify the hair fiber from root to tip.\n2. **Scalp Tonic**: Apply the strengthening scalp serum directly to parted hair sections and massage gently to stimulate circulation."
-  },
-  // Dandruff / Flaky Scalp / Scalp Care + Dryness
-  {
-    triggers: ["dandruff", "flak", "itch", "scalp", "dandruffy"],
-    answer: "For dry hair with dandruff or an itchy scalp, the key is eliminating flakes while replenishing deep moisture without sulfates:\n\n1. **Targeted Scalp Cleanse**: EverPure Sulfate-Free Scalp Care + Detox Shampoo (with Neem Leaf & Menthol) or Elvive Phytoclear Anti-Dandruff soothing wash. It purifies the scalp and removes visible flakes without stripping moisture.\n2. **Mid-Lengths to Ends Moisture**: EverPure Scalp Care + Detox Conditioner (apply only from mid-lengths to ends to keep the scalp balanced).\n3. **Instant Hydration Booster**: Elvive Hyaluron Plump Flash Hydration Wonder Water (gives instant 72-hour moisture surge to parched strands in 8 seconds).\n4. **Weekly Treatment**: Elvive Total Repair 5 Damage-Erasing Balm on your ends for rich, replenishing nourishment."
-  },
   // Foundation / Makeup / Concealer
   {
     triggers: ["foundation", "makeup", "concealer", "shade", "coverage", "powder"],
     answer: "For everyday complexion and shade matching:\n\n1. **Everyday Natural**: True Match Super-Blendable Foundation (available in 47 skin-true shades categorized by Warm, Neutral, and Cool undertones).\n2. **High Coverage / Longwear**: Infallible 24H Fresh Wear Foundation (sweat-resistant, transfer-proof, breathable satin finish).\n3. **Concealer**: True Match Radiant Serum Concealer with Hyaluronic Acid & Caffeine for instant under-eye brightening."
-  },
-  // Mascara / Lashes / Eyes
-  {
-    triggers: ["mascara", "lash", "eyelash", "volume", "length", "eyeliner"],
-    answer: "For lash volume and length, L'Oréal's cult favorites are:\n\n1. **Lash Paradise Mascara**: Intense instant volume and dramatic length with feather-soft wavy bristles.\n2. **Telescopic Original Mascara**: Legendary separation and up to 60% longer lashes with the precision brush.\n3. **Panoramic Mascara**: Fan-out effect with corner-to-corner volume for open, wide-eyed impact."
-  },
-  // Lips
-  {
-    triggers: ["lipstick", "lip", "gloss", "lip balm"],
-    answer: "For lips:\n\n1. **Hydrating Color**: Glow Paradise Balm-in-Lipstick (infused with Pomegranate Extract for cushiony hydration and glowing color).\n2. **Matte Longwear**: Infallible Matte Resistance Liquid Lipstick (lasts up to 16 hours without drying or flaking, infused with Hyaluronic Acid).\n3. **Plump & Shine**: Colour Riche Plump and Shine for a refreshing cooling sensation and glossy tint."
   },
   // Routine / Morning / Night (general)
   {
@@ -90,15 +66,10 @@ const LOREAL_KB = [
   }
 ];
 
-// Conversational fallbacks for greetings and simple pleasantries
 const CHAT_INTENTS = [
   {
-    triggers: ["hello", "hi", "hey", "bonjour", "good morning", "good evening", "howdy"],
-    answer: "Hello! I am your L'Oréal Smart Product Advisor. How can I help you today? You can ask me about finding the right skincare routine, repairing damaged hair, matching foundation shades, or targeting specific concerns like dark spots or fine lines."
-  },
-  {
-    triggers: ["how are you", "who are you", "what can you do"],
-    answer: "I am your personal L'Oréal Beauty Advisor! I can recommend personalized routines and products across L'Oréal Paris skincare (Revitalift, Bright Reveal, Hydra Genius), haircare (Elvive, EverPure), and cosmetics (True Match, Lash Paradise, Infallible). Tell me about your skin or hair type!"
+    triggers: ["hello", "hi", "hey", "bonjour", "good morning", "good evening"],
+    answer: "Hello! I am your L'Oréal Smart Product Advisor. How can I help you today? You can ask me about finding the right skincare routine, repairing damaged hair, matching foundation shades, or treating dandruff and dry skin."
   },
   {
     triggers: ["thank", "thanks", "merci", "awesome", "great"],
@@ -106,30 +77,20 @@ const CHAT_INTENTS = [
   }
 ];
 
-/* -------------------------------------------------------------
-   SMART MATCHER: Understands questions naturally
-   ------------------------------------------------------------- */
 function findBestAnswer(question) {
   const q = question.toLowerCase().trim();
 
-  // 1. Check greetings and conversational intents first
   for (const intent of CHAT_INTENTS) {
-    if (intent.triggers.some((t) => q.includes(t))) {
-      return intent.answer;
-    }
+    if (intent.triggers.some((t) => q.includes(t))) return intent.answer;
   }
 
-  // 2. Score knowledge base entries based on matching keywords
   let bestMatch = null;
   let maxScore = 0;
 
   for (const entry of LOREAL_KB) {
     let score = 0;
     for (const trig of entry.triggers) {
-      if (q.includes(trig)) {
-        // Longer trigger phrases get higher weight
-        score += trig.length > 5 ? 3 : 1;
-      }
+      if (q.includes(trig)) score += trig.length > 5 ? 3 : 1;
     }
     if (score > maxScore) {
       maxScore = score;
@@ -137,24 +98,11 @@ function findBestAnswer(question) {
     }
   }
 
-  if (bestMatch && maxScore > 0) {
-    return bestMatch.answer;
-  }
-
-  // 3. Fallback: If off-topic or unknown query
-  const generalBeautyWords = ["skin", "hair", "face", "makeup", "color", "body", "oil", "wash", "cream", "loreal", "l'oréal", "product", "recommend", "best"];
-  const isBeauty = generalBeautyWords.some((w) => q.includes(w));
-
-  if (isBeauty) {
-    return "I would love to help you find the best L'Oréal product for that! Could you tell me a bit more about:\n- Your specific goal (e.g., hydration, dark spots, volume, anti-aging)?\n- Your skin type (oily, dry, sensitive) or hair texture (fine, curly, color-treated)?";
-  }
+  if (bestMatch && maxScore > 0) return bestMatch.answer;
 
   return "I specialize specifically in L'Oréal beauty, skincare, haircare, and makeup routines. Could you let me know what skin concern, hair goal, or product category you are looking for?";
 }
 
-/* -------------------------------------------------------------
-   UI RENDERING & INTERACTION
-   ------------------------------------------------------------- */
 function appendMessage(text, sender = "ai") {
   const group = document.createElement("div");
   group.className = `msg-group ${sender}-group`;
@@ -212,7 +160,6 @@ async function handleUserMessage(text) {
       appendMessage(reply, "ai");
       conversationHistory.push({ role: "assistant", content: reply });
     } else {
-      // Natural human-like response delay (400ms)
       await new Promise((resolve) => setTimeout(resolve, 450));
       removeTypingIndicator();
       const reply = findBestAnswer(text);
@@ -220,7 +167,7 @@ async function handleUserMessage(text) {
       conversationHistory.push({ role: "assistant", content: reply });
     }
   } catch (err) {
-    console.error("Worker error, using smart advisor logic:", err);
+    console.error("Worker error:", err);
     removeTypingIndicator();
     const fallbackReply = findBestAnswer(text);
     appendMessage(fallbackReply, "ai");
@@ -228,12 +175,10 @@ async function handleUserMessage(text) {
   }
 }
 
-// Quick prompt click handler
 window.sendPrompt = function (promptText) {
   handleUserMessage(promptText);
 };
 
-// Initial welcome greeting
 window.addEventListener("DOMContentLoaded", () => {
   appendMessage(
     "👋 Bonjour! I am your L'Oréal Smart Product Advisor. How can I help you today? Ask me about finding the right skincare routine, repairing damaged hair, matching foundation shades, or treating specific skin concerns.",
@@ -241,7 +186,6 @@ window.addEventListener("DOMContentLoaded", () => {
   );
 });
 
-// Form submit
 chatForm.addEventListener("submit", (e) => {
   e.preventDefault();
   handleUserMessage(userInput.value);
