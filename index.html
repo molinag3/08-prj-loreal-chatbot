@@ -14,6 +14,7 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
+
   <body>
     <div class="page-wrapper">
       <!------- Header / Branding ------->
@@ -22,57 +23,53 @@
           <img src="loreal-logo.png" alt="L'Oréal Logo" class="brand-logo" />
         </div>
         <h1 class="site-title">Smart Product Advisor</h1>
-        <p class="site-subtitle">Powered by Cloudflare Workers AI & L'Oréal Beauty Intelligence</p>
-        <!-- Worker connection status pill -->
-        <div class="worker-status-bar">
-          <div class="status-left">
-            <span class="status-dot"></span>
-            <span>Worker Status: <strong id="workerStatusText">Active (/api/chat)</strong></span>
-          </div>
-          <span class="worker-badge">Cloudflare AI Connected</span>
-        </div>
+        <p class="site-subtitle">Personalized Beauty, Skincare & Haircare Consultations</p>
       </header>
+
       <!------- Chat Area ------->
       <main>
-          <section class="chatbox">
+        <section class="chatbox">
           <!-- Quick Starter Prompts -->
           <div class="quick-prompts">
-            <button type="button" class="prompt-chip" onclick="sendPrompt('Suggest a hydrating morning skincare routine for dry skin')">💧 Morning Routine</button>
-            <button type="button" class="prompt-chip" onclick="sendPrompt('What serum is best for dark spots and dullness?')">✨ Bright Reveal Serum</button>
-            <button type="button" class="prompt-chip" onclick="sendPrompt('Recommend a repairing hair mask for heat damage')">💇‍♀️ Hair Damage Mask</button>
-            <button type="button" class="prompt-chip test-offtopic" onclick="sendPrompt('Can you write me a Python script to sort a list?')">🚫 Test Off-Topic Guardrail</button>
+            <button type="button" class="prompt-chip" onclick="sendPrompt('My hair is very dry and dandruffy')">💧 Dry & Dandruff Hair</button>
+            <button type="button" class="prompt-chip" onclick="sendPrompt('Suggest a hydrating morning skincare routine')">✨ Morning Skincare</button>
+            <button type="button" class="prompt-chip" onclick="sendPrompt('What serum is best for dark spots?')">🌟 Dark Spot Serum</button>
+            <button type="button" class="prompt-chip" onclick="sendPrompt('Recommend a routine for anti-aging and wrinkles')">⏳ Anti-Aging Routine</button>
           </div>
+
           <div id="chatWindow" class="chat-window">
             <!-- messages will be appended here via JS -->
           </div>
+
           <form id="chatForm" class="chat-form">
             <label for="userInput" class="visually-hidden">Message</label>
             <input
               id="userInput"
               name="userInput"
               type="text"
-              placeholder="Ask me about L'Oréal products, ingredients, or routines…"
+              placeholder="Ask me about products, routines, ingredients, or hair & skin concerns…"
               autocomplete="off"
               required
             />
             <button type="submit" id="sendBtn" aria-label="Send">
               <span class="material-icons">send</span>
-              ss="visually-hidden">Send</span>
+              <span class="visually-hidden">Send</span>
             </button>
           </form>
         </section>
       </main>
+
       <!------- Footer Links ------->
       <footer class="site-footer">
         <p>&copy; 2025 L'Oréal. All rights reserved.</p>
         <nav>
-          <!-- These URLs are placeholders -->
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Use</a>
-          <a href="#">Contact</a>
+          <a href="#">Contact Expert</a>
         </nav>
       </footer>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
