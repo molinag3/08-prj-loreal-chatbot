@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chat Assistant</title>
+    <title>L'Oréal Smart Product Advisor</title>
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -14,51 +14,23 @@
     />
     <link rel="stylesheet" href="style.css" />
   </head>
-
   <body>
     <div class="page-wrapper">
       <!------- Header / Branding ------->
       <header class="site-header">
+        <div class="brand-logo-container">
+          <img src="loreal-logo.png" alt="L'Oréal Logo" class="brand-logo" />
+        </div>
         <h1 class="site-title">Smart Product Advisor</h1>
+        <p class="site-subtitle">Powered by Cloudflare Workers AI & L'Oréal Beauty Intelligence</p>
+        <!-- Worker connection status pill -->
+        <div class="worker-status-bar">
+          <div class="status-left">
+            <span class="status-dot"></span>
+            <span>Worker Status: <strong id="workerStatusText">Active (/api/chat)</strong></span>
+          </div>
+          <span class="worker-badge">Cloudflare AI Connected</span>
+        </div>
       </header>
-
       <!------- Chat Area ------->
       <main>
-        <section class="chatbox">
-          <div id="chatWindow" class="chat-window">
-            <!-- messages will be appended here via JS -->
-          </div>
-
-          <form id="chatForm" class="chat-form">
-            <label for="userInput" class="visually-hidden">Message</label>
-            <input
-              id="userInput"
-              name="userInput"
-              type="text"
-              placeholder="Ask me about products or routines…"
-              autocomplete="off"
-              required
-            />
-            <button type="submit" id="sendBtn">
-              <span class="material-icons">send</span>
-              <span class="visually-hidden">Send</span>
-            </button>
-          </form>
-        </section>
-      </main>
-
-      <!------- Footer Links ------->
-      <footer class="site-footer">
-        <p>&copy; 2025 Company Name. All rights reserved.</p>
-        <nav>
-          <!-- These URLs are placeholders -->
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Use</a>
-          <a href="#">Contact</a>
-        </nav>
-      </footer>
-    </div>
-
-    <script src="script.js"></script>
-  </body>
-</html>
